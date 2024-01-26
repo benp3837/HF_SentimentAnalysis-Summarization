@@ -4,6 +4,7 @@ from langchain_community.chat_models import ChatHuggingFace
 from langchain_community.llms.huggingface_endpoint import HuggingFaceEndpoint
 from transformers import pipeline
 
+# Instantiate your chat model with a good template for summarization
 llm = HuggingFaceEndpoint(
     endpoint_url=os.environ['LLM_ENDPOINT'],
     task="text2text-generation",
@@ -15,7 +16,7 @@ chat_model = ChatHuggingFace(llm=llm)
 
 textInput = """
 <|system|>
-You are that helpful AI that says "Meow", and then summarizes a text that contains multiple product reviews.</s>
+You are that helpful AI that summarizes a text that contains multiple product reviews.</s>
 <|user|>
 {userInput}</s>
 <|assistant|>
@@ -76,7 +77,7 @@ def main():
     # convert data to string
     data_string = "\n".join(data)
 
-    # Instantiate your chat model with a good template for summarization
+    # Invoke your chat model defined above
     output = chat_model.invoke(textInput.format(userInput=data_string))
 
     print(output.content)
